@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wema Bet Pro</title>
+
+<style>
+body { margin:0; font-family:Arial, sans-serif; background:#0f1b2a; color:white; }
+
+/* TOP */
+.topbar {
+    display:flex;
+    justify-content:space-between;
+    padding:10px;
+    background:#0b1622;
+    align-items:center;
+}
+.logo { color:#ffcc00; font-weight:bold; font-size:20px; }
+.user-info { font-size:14px; color:#ccc; }
+.deposit-btn {
+    background:#ffcc00;
+    padding:8px 15px;
+    border-radius:20px;
+    color:black;
+    font-weight:bold;
+}
+
+/* TABS */
+.categories {
+    display:flex;
+    overflow-x:auto;
+    background:#132235;
+    padding:10px;
+}
+.cat { margin-right:15px; opacity:0.6; white-space:nowrap; }
+.cat.active { opacity:1; font-weight:bold; color:#ffcc00; }
+
+/* MATCH */
+.match {
+    background:#1c2b3a;
+    margin:10px;
+    padding:10px;
+    border-radius:10px;
+}
+.odds { display:flex; gap:5px; }
+.odd {
+    flex:1;
+    background:#2b3f55;
+    padding:10px;
+    text-align:center;
+    border-radius:6px;
+    cursor:pointer;
+}
+.odd:hover { background:#ffcc00; color:black; }
+
+/* GAMES */
+.games {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    padding:10px;
+}
+.game {
+    background:#1c2b3a;
+    padding:25px;
+    text-align:center;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* WALLET */
+#wallet {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#1c2b3a;
+    padding:15px;
+    display:none;
+    z-index:100;
+}
+
+/* BET SLIP */
+#betslip {
+    position:fixed;
+    right:0;
+    top:0;
+    width:85%;
+    height:100%;
+    background:#0b1622;
+    padding:15px;
+    display:none;
+    z-index:200;
+    overflow-y:auto;
+}
+
+/* NAV */
+.nav {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#0b1622;
+    display:flex;
+    justify-content:space-around;
+    padding:10px;
+    z-index:150;
+}
+
+/* LOGIN */
+#login-screen {
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:#0f1b2a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:300;
+    padding:20px;
+}
+
+.login-box {
+    background:#1c2b3a;
+    padding:30px 25px;
+    border-radius:16px;
+    width:100%;
+    max-width:380px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.login-box h1 {
+    text-align:center;
+    color:#ffcc00;
+    margin-bottom:25px;
+    font-size:28px;
+}
+
+.input-group {
+    margin-bottom:18px;
+}
+
+.input-group label {
+    display:block;
+    margin-bottom:6px;
+    font-size:14px;
+    color:#ddd;
+}
+
+.input-group input {
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#2b3f55;
+    color:white;
+    font-size:16px;
+}
+
+.input-group input:focus {
+    outline:none;
+    background:#354a63;
+    box-shadow:0 0 0 3px rgba(255,204,0,0.3);
+}
+
+.remember {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:15px 0;
+    font-size:14px;
+}
+
+.btn {
+    width:100%;
+    padding:14px;
+    background:#ffcc00;
+    color:black;
+    border:none;
+    border-radius:8px;
+    font-size:17px;
+    font-weight:bold;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.btn:hover {
+    background:#ffd633;
+}
+
+.link {
+    text-align:center;
+    margin-top:20px;
+    color:#ffcc00;
+    cursor:pointer;
+}
+
+.error {
+    color:#ff6666;
+    text-align:center;
+    margin-top:10px;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+    <div class="login-box">
+        <h1>WemaBet</h1>
+        <div class="input-group">
+            <label for="email">Email or Phone</label>
+            <input type="email" id="email" placeholder="example@email.com" autocomplete="username email" value="demo@wema.com">
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" value="demo123">
+        </div>
+        
+        <div class="remember">
+            <input type="checkbox" id="remember" checked>
+            <label for="remember">Remember me</label>
+        </div>
+        
+        <button class="btn" onclick="login()">LOG IN</button>
+        
+        <div class="link" onclick="fakeSignup()">Don't have an account? Sign up</div>
+        
+        <div id="login-error" class="error">Invalid email or password</div>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none;">
+
+<!-- TOP -->
+<div class="topbar">
+    <div class="logo">WemaBet</div>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <div class="user-info" id="username-display">Demo User</div>
+        <div class="deposit-btn" onclick="showWallet()">Deposit</div>
+    </div>
+</div>
+
+<!-- TABS -->
+<div class="categories">
+    <div class="cat active" onclick="showSection('sports')">Sports</div>
+    <div class="cat" onclick="showSection('live')">Live</div>
+    <div class="cat" onclick="showSection('casino')">Casino</div>
+    <div class="cat" onclick="showSection('crash')">Crash</div>
+</div>
+
+<!-- SPORTS -->
+<div id="sports">
+<div class="match">
+Man Utd vs Liverpool
+<div class="odds">
+<div class="odd" onclick="addToSlip(2.0,'Man Utd vs Liverpool')">2.00</div>
+<div class="odd" onclick="addToSlip(3.0,'Man Utd vs Liverpool')">3.00</div>
+<div class="odd" onclick="addToSlip(2.5,'Man Utd vs Liverpool')">2.50</div>
+</div>
+</div>
+</div>
+
+<!-- LIVE -->
+<div id="live" style="display:none">
+<div class="match">
+LIVE 🔴 Chelsea vs Arsenal
+<div class="odds">
+<div class="odd" onclick="addToSlip(2.2,'Chelsea vs Arsenal')">2.20</div>
+<div class="odd" onclick="addToSlip(3.1,'Chelsea vs Arsenal')">3.10</div>
+<div class="odd" onclick="addToSlip(2.9,'Chelsea vs Arsenal')">2.90</div>
+</div>
+</div>
+</div>
+
+<!-- CASINO -->
+<div id="casino" style="display:none">
+<div class="games">
+<div class="game" onclick="alert('Slots')">🎰 Slots</div>
+<div class="game" onclick="alert('Roulette')">🎡 Roulette</div>
+<div class="game" onclick="alert('Blackjack')">🃏 Blackjack</div>
+<div class="game" onclick="alert('Poker')">♠️ Poker</div>
+</div>
+</div>
+
+<!-- CRASH -->
+<div id="crash" style="display:none">
+<div class="games">
+<div class="game" onclick="playAviator()">Aviator</div>
+<div class="game" onclick="playCrash()">Crash 2</div>
+</div>
+</div>
+
+<!-- WALLET -->
+<div id="wallet">
+Balance: KES <span id="balance">1000</span><br><br>
+<input id="amount" placeholder="Enter amount" style="width:100%; padding:10px; margin-bottom:10px;">
+<button onclick="deposit()" style="width:100%; padding:12px; background:#ffcc00; color:black; border:none; border-radius:8px;">Deposit</button>
+</div>
+
+<!-- BET SLIP -->
+<div id="betslip">
+<h3>Bet Slip</h3>
+<div id="bets"></div>
+<p>Total Odds: <span id="totalOdds">1.00</span></p>
+<input id="stake" placeholder="Stake" style="width:100%; padding:10px; margin:10px 0;">
+<p>Win: <span id="win">0</span></p>
+<button onclick="placeBet()" style="width:100%; padding:12px; background:#ffcc00; color:black; border:none; border-radius:8px; margin-bottom:8px;">Place Bet</button>
+<button onclick="closeSlip()" style="width:100%; padding:12px; background:#555; color:white; border:none; border-radius:8px;">Close</button>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+<div onclick="showSection('sports')">🏠 Home</div>
+<div onclick="showWallet()">💰 Wallet</div>
+<div onclick="openSlip()">📝 Bets</div>
+<div onclick="logout()" style="color:#ff6666;">🚪 Logout</div>
+</div>
+
+</div>
+
+<script>
+
+// === LOGIN SYSTEM ===
+let currentUser = null;
+
+function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    
+    if (!email || !password) {
+        showError("Please fill in all fields");
+        return;
+    }
+    
+    // Demo credentials - you can change these
+    if ((email === "demo@wema.com" || email === "user") && password === "demo123") {
+        currentUser = email;
+        localStorage.setItem("wemaUser", email);
+        
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-app").style.display = "block";
+        
+        document.getElementById("username-display").textContent = email.split("@")[0];
+        
+        // Trigger browser password save suggestion
+        console.log("%c✅ Login successful - Browser may prompt to save password", "color: lime; font-weight:bold");
+    } else {
+        showError("Invalid email or password");
+    }
+}
+
+function showError(msg) {
+    const errEl = document.getElementById("login-error");
+    errEl.textContent = msg;
+    errEl.style.display = "block";
+    setTimeout(() => errEl.style.display = "none", 3000);
+}
+
+function fakeSignup() {
+    alert("Sign up coming soon! Use demo credentials for now:\n\nEmail: demo@wema.com\nPassword: demo123");
+}
+
+function logout() {
+    if (confirm("Logout?")) {
+        localStorage.removeItem("wemaUser");
+        location.reload();
+    }
+}
+
+// Check if already logged in
+function checkLogin() {
+    const savedUser = localStorage.getItem("wemaUser");
+    if (savedUser) {
+        currentUser = savedUser;
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-app").style.display = "block";
+        document.getElementById("username-display").textContent = savedUser.split("@")[0] || "User";
+    }
+}
+
+// === EXISTING APP CODE (unchanged except minor improvements) ===
+let balance = 1000;
+let betslip = [];
+
+function update(){
+    document.getElementById("balance").innerText = balance;
+}
+
+/* NAV */
+function showSection(id){
+    ["sports","live","casino","crash"].forEach(s=>{
+        const el = document.getElementById(s);
+        if(el) el.style.display = "none";
+    });
+    const active = document.getElementById(id);
+    if(active) active.style.display = "block";
+}
+
+/* WALLET */
+function showWallet(){
+    document.getElementById("wallet").style.display = "block";
+}
+function deposit(){
+    let amount = Number(document.getElementById("amount").value);
+    if(!amount) return alert("Enter amount");
+    
+    alert("Send to 0748121890 via M-Pesa");
+    setTimeout(()=>{
+        balance += amount;
+        update();
+        alert("✅ Deposit successful!");
+        document.getElementById("wallet").style.display = "none";
+    }, 1500);
+}
+
+/* BET SLIP */
+function addToSlip(odd, match){
+    betslip.push({odd, match});
+    renderSlip();
+    document.getElementById("betslip").style.display = "block";
+}
+
+function renderSlip(){
+    let html = "";
+    let total = 1;
+    betslip.forEach(b => {
+        total *= b.odd;
+        html += `<div style="padding:8px 0; border-bottom:1px solid #333;">\( {b.match} <strong> \){b.odd}</strong></div>`;
+    });
+    document.getElementById("bets").innerHTML = html || "<p>No bets added</p>";
+    document.getElementById("totalOdds").innerText = total.toFixed(2);
+    calcWin();
+}
+
+function calcWin(){
+    let stake = Number(document.getElementById("stake").value) || 0;
+    let total = Number(document.getElementById("totalOdds").innerText) || 1;
+    document.getElementById("win").innerText = (stake * total).toFixed(2);
+}
+
+document.getElementById("stake").addEventListener("input", calcWin);
+
+function placeBet(){
+    let stake = Number(document.getElementById("stake").value);
+    if(!stake) return alert("Enter stake");
+    if(stake > balance) return alert("Insufficient balance");
+    
+    balance -= stake;
+    let total = Number(document.getElementById("totalOdds").innerText);
+
+    if(Math.random() > 0.45){  // Slightly better odds for demo
+        let win = stake * total;
+        balance += win;
+        alert("🎉 You Won KES " + win.toFixed(0) + "!");
+    } else {
+        alert("😢 Bet Lost");
+    }
+
+    betslip = [];
+    renderSlip();
+    update();
+    closeSlip();
+}
+
+function openSlip(){
+    document.getElementById("betslip").style.display = "block";
+}
+function closeSlip(){
+    document.getElementById("betslip").style.display = "none";
+}
+
+/* GAMES */
+function playAviator(){
+    let m = 1;
+    let crashed = false;
+    const interval = setInterval(() => {
+        m += (0.05 + Math.random() * 0.15);
+        if (m > 10 || Math.random() < 0.08) {
+            clearInterval(interval);
+            alert("💥 Crashed at " + m.toFixed(2) + "x");
+        }
+    }, 120);
+}
+
+function playCrash(){
+    alert("🚀 Crash 2.0 coming soon!");
+}
+
+// Initialize
+checkLogin();
+update();
+showSection('sports');
+</script>
+
+</body>
+</html>
