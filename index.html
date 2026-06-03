@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wema Bet Pro</title>
+<style>
+    :root {
+        --red: #e63939;
+        --blue: #1e3a8a;
+        --dark: #0a0e14;
+    }
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background: var(--dark);
+        color: white;
+    }
+
+    /* LOGIN - Owner First */
+    #login-screen {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, var(--blue), #0a0e14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    .login-box {
+        background: #11171f;
+        padding: 35px 25px;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 380px;
+        text-align: center;
+        border: 3px solid var(--red);
+    }
+    .logo-big {
+        font-size: 38px;
+        font-weight: bold;
+        background: linear-gradient(90deg, var(--red), var(--blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+    }
+    .owner-tag {
+        color: var(--red);
+        font-size: 14px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    .login-box input {
+        width: 100%;
+        padding: 15px;
+        margin: 12px 0;
+        background: #1f2a38;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        color: white;
+        font-size: 16px;
+    }
+    .login-box button {
+        width: 100%;
+        padding: 16px;
+        background: var(--red);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    /* TOP BAR */
+    .topbar {
+        background: var(--blue);
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .logo { 
+        font-size: 26px; 
+        font-weight: bold; 
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .owner-name {
+        font-size: 13px;
+        color: var(--red);
+        font-weight: bold;
+    }
+
+    /* TABS */
+    .tabs {
+        display: flex;
+        background: #11171f;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 12px;
+    }
+    .tab {
+        padding: 10px 18px;
+        white-space: nowrap;
+        border-radius: 25px;
+        background: #1f2a38;
+        color: white;
+    }
+    .tab.active {
+        background: var(--red);
+        color: white;
+        font-weight: bold;
+    }
+
+    /* MATCH CARD */
+    .match-card {
+        background: #1f2a38;
+        margin: 12px;
+        border-radius: 12px;
+        overflow: hidden;
+        border-left: 4px solid var(--red);
+    }
+    .league {
+        background: #16202b;
+        padding: 8px 12px;
+        font-size: 13px;
+        color: #ddd;
+    }
+    .teams {
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 17px;
+    }
+    .odds-row {
+        display: flex;
+        border-top: 1px solid #334155;
+    }
+    .odd {
+        flex: 1;
+        text-align: center;
+        padding: 14px 10px;
+        border-right: 1px solid #334155;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 17px;
+    }
+    .odd:hover {
+        background: var(--blue);
+    }
+
+    /* BET SLIP */
+    #betslip {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #11171f;
+        border-top: 4px solid var(--red);
+        max-height: 82vh;
+        overflow-y: auto;
+        z-index: 200;
+        display: none;
+    }
+
+    /* NAV */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: var(--blue);
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0 6px;
+        z-index: 300;
+    }
+    .nav-item {
+        text-align: center;
+        font-size: 11px;
+        color: white;
+    }
+    .nav-item.active { color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN - Owner First -->
+<div id="login-screen">
+    <div class="login-box">
+        <div class="logo-big">WEMA BET PRO</div>
+        <div class="owner-tag">OWNED &amp; POWERED BY THE FOUNDER</div>
+        <h2 style="margin:10px 0 20px;">Welcome Owner</h2>
+        <input type="text" id="login-user" placeholder="Phone or Email" value="owner@wema.com">
+        <input type="password" id="login-pass" placeholder="Password" value="owner123">
+        <button onclick="login()">LOG IN AS OWNER</button>
+        <p style="margin-top:20px; font-size:14px; color:#aaa;">
+            Demo Login • First Person = Product Owner
+        </p>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none; padding-bottom:75px;">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="logo">WEMA BET <span style="color:var(--red);">PRO</span></div>
+        <div>
+            <span class="owner-name">OWNER MODE</span>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(0)">Sports</div>
+        <div class="tab" onclick="switchTab(1)">Live</div>
+        <div class="tab" onclick="switchTab(2)">Casino</div>
+        <div class="tab" onclick="switchTab(3)">Crash</div>
+    </div>
+
+    <!-- Sports -->
+    <div id="sports-section">
+        <div class="match-card">
+            <div class="league">Premier League • Today 20:00</div>
+            <div class="teams">
+                <div>Man Utd</div>
+                <div style="text-align:center; font-size:14px; color:#aaa;">VS</div>
+                <div>Liverpool</div>
+            </div>
+            <div class="odds-row">
+                <div class="odd" onclick="addBet(2.15, 'Man Utd', 'Man Utd vs Liverpool')">2.15</div>
+                <div class="odd" onclick="addBet(3.45, 'Draw', 'Man Utd vs Liverpool')">3.45</div>
+                <div class="odd" onclick="addBet(2.75, 'Liverpool', 'Man Utd vs Liverpool')">2.75</div>
+            </div>
+        </div>
+
+        <div class="match-card">
+            <div class="league">La Liga • Tomorrow</div>
+            <div class="teams">
+                <div>Real Madrid</div>
+                <div style="text-align:center; font-size:14px; color:#aaa;">VS</div>
+                <div>Barcelona</div>
+            </div>
+            <div class="odds-row">
+                <div class="odd" onclick="addBet(1.90, 'Real Madrid', 'Real Madrid vs Barcelona')">1.90</div>
+                <div class="odd" onclick="addBet(3.70, 'Draw', 'Real Madrid vs Barcelona')">3.70</div>
+                <div class="odd" onclick="addBet(3.50, 'Barcelona', 'Real Madrid vs Barcelona')">3.50</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live -->
+    <div id="live-section" style="display:none;">
+        <h3 style="padding:15px 15px 5px; color:var(--red);">🔴 LIVE MATCHES</h3>
+        <div class="match-card">
+            <div class="league">LIVE • Chelsea vs Arsenal</div>
+            <div class="teams">
+                <div>Chelsea</div>
+                <div style="text-align:center;">2 - 1</div>
+                <div>Arsenal</div>
+            </div>
+            <div class="odds-row">
+                <div class="odd" onclick="addBet(2.40, 'Chelsea', 'Chelsea vs Arsenal')">2.40</div>
+                <div class="odd" onclick="addBet(3.20, 'Draw', 'Chelsea vs Arsenal')">3.20</div>
+                <div class="odd" onclick="addBet(2.65, 'Arsenal', 'Chelsea vs Arsenal')">2.65</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Casino & Crash -->
+    <div id="casino-section" style="display:none; padding:30px; text-align:center;">
+        <h2 style="color:var(--red);">CASINO GAMES</h2>
+        <p>Slots, Roulette, Blackjack, Poker</p>
+    </div>
+
+    <div id="crash-section" style="display:none; padding:30px; text-align:center;">
+        <h2 style="color:var(--red);">CRASH / AVIATOR</h2>
+        <button onclick="playAviator()" style="padding:18px 50px; font-size:19px; background:var(--red); color:white; border:none; border-radius:12px; margin-top:20px;">PLAY AVIATOR</button>
+    </div>
+
+</div>
+
+<!-- BET SLIP -->
+<div id="betslip">
+    <div style="padding:15px; background:#1f2a38;">
+        <h3 style="color:var(--red);">Bet Slip (<span id="bet-count">0</span>)</h3>
+        <div id="slip-items"></div>
+        <p>Total Odds: <strong id="total-odds" style="color:var(--red);">1.00</strong></p>
+        <input type="number" id="stake-input" placeholder="Stake Amount (KES)" style="width:100%; padding:14px; margin:12px 0; background:#2a3747; border:none; border-radius:8px; color:white;">
+        <p>Possible Win: <strong id="possible-win" style="color:var(--red);">0</strong> KES</p>
+        
+        <button onclick="placeBet()" style="width:100%; padding:16px; background:var(--red); color:white; border:none; border-radius:8px; font-weight:bold; font-size:17px;">PLACE BET</button>
+        <button onclick="closeSlip()" style="width:100%; margin-top:10px; padding:14px; background:#334155; color:white; border:none; border-radius:8px;">Cancel</button>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="navigate(0)">🏠<br><small>Home</small></div>
+    <div class="nav-item" onclick="showWallet()">💰<br><small>Wallet</small></div>
+    <div class="nav-item" onclick="openSlip()">📝<br><small>Bets</small></div>
+    <div class="nav-item" onclick="logout()">👤<br><small>Owner</small></div>
+</div>
+
+<script>
+// Login System
+function login() {
+    const user = document.getElementById("login-user").value.trim();
+    const pass = document.getElementById("login-pass").value;
+
+    if (user && pass) {
+        localStorage.setItem("wemaOwner", user);
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-app").style.display = "block";
+    } else {
+        alert("Enter login details (Owner Mode)");
+    }
+}
+
+function logout() {
+    if (confirm("Logout as Product Owner?")) {
+        localStorage.removeItem("wemaOwner");
+        location.reload();
+    }
+}
+
+// Auto login if saved
+if (localStorage.getItem("wemaOwner")) {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("main-app").style.display = "block";
+}
+
+// App Logic
+let balance = 2450;
+let betslip = [];
+
+function updateBalance() {
+    // You can add balance display if needed
+}
+
+function switchTab(n) {
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===n));
+    document.getElementById("sports-section").style.display = n===0 ? "block" : "none";
+    document.getElementById("live-section").style.display = n===1 ? "block" : "none";
+    document.getElementById("casino-section").style.display = n===2 ? "block" : "none";
+    document.getElementById("crash-section").style.display = n===3 ? "block" : "none";
+}
+
+function addBet(odd, team, match) {
+    betslip.push({odd, team, match});
+    renderSlip();
+    openSlip();
+}
+
+function renderSlip() {
+    let html = "";
+    let total = 1;
+    betslip.forEach(b => {
+        total *= b.odd;
+        html += `<div style="padding:12px; background:#2a3747; margin:8px 0; border-radius:8px; border-left:3px solid var(--red);">
+                    ${b.match}<br>
+                    <strong>${b.team} @ ${b.odd}</strong>
+                 </div>`;
+    });
+    document.getElementById("slip-items").innerHTML = html || "<p style='color:#777; text-align:center;'>Tap odds to add bets</p>";
+    document.getElementById("bet-count").textContent = betslip.length;
+    document.getElementById("total-odds").textContent = total.toFixed(2);
+    
+    const stake = parseFloat(document.getElementById("stake-input").value) || 0;
+    document.getElementById("possible-win").textContent = (stake * total).toFixed(0);
+}
+
+function openSlip() {
+    document.getElementById("betslip").style.display = "block";
+    renderSlip();
+}
+
+function closeSlip() {
+    document.getElementById("betslip").style.display = "none";
+}
+
+function placeBet() {
+    const stake = parseFloat(document.getElementById("stake-input").value);
+    if (!stake || stake > balance) {
+        return alert("Insufficient balance!");
+    }
+    
+    balance -= stake;
+    const total = parseFloat(document.getElementById("total-odds").textContent);
+    
+    if (Math.random() > 0.47) {
+        const win = Math.round(stake * total);
+        balance += win;
+        alert(`🎉 BIG WIN! KES ${win} credited to owner account`);
+    } else {
+        alert("Bet Lost");
+    }
+    
+    betslip = [];
+    closeSlip();
+}
+
+function showWallet() {
+    const amount = prompt("Enter deposit amount (KES):", "1000");
+    if (amount) {
+        setTimeout(() => {
+            balance += parseFloat(amount);
+            alert(`✅ Deposit of KES ${amount} successful (Owner Account)`);
+        }, 700);
+    }
+}
+
+function playAviator() {
+    let m = 1.00;
+    const int = setInterval(() => {
+        m += 0.08 + Math.random() * 0.25;
+        if (Math.random() < 0.06) {
+            clearInterval(int);
+            alert(`💥 CRASHED at ${m.toFixed(2)}x`);
+        }
+    }, 130);
+}
+
+function navigate(n) {
+    if (n === 1) showWallet();
+    else if (n === 2) openSlip();
+}
+
+// Init
+switchTab(0);
+</script>
+
+</body>
+</html>
